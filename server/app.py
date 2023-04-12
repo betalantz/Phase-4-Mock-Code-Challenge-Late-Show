@@ -31,7 +31,7 @@ def episode_by_id(id):
         res = make_response(body, 404)
         return res
     if request.method == 'GET':
-        return episode.to_dict(rules=('-guests',))
+        return episode.to_dict(rules=('-appearances', 'guests', '-guests.appearances',))
     if request.method == 'DELETE':
         db.session.delete(episode)
         db.session.commit()

@@ -47,7 +47,7 @@ function Home() {
       </div>
       <div className="card">
         <h2>Guest List</h2>
-        {episode.guests.map((guest) => (
+        {episode?.guests?.map((guest) => (
           <div key={guest.id}>
             <h3>{guest.name}</h3>
             <p>
