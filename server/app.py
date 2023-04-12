@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-from flask import Flask, request
+from flask import Flask, request, make_response
 from flask_migrate import Migrate
 
 from models import db, Episode, Guest, Appearance
@@ -22,6 +22,29 @@ def home():
 def episodes():
     episodes_dict_list = [epi.to_dict(rules=('-appearances', '-guests')) for epi in Episode.query.all()]
     return episodes_dict_list
+
+@app.route('/episodes/<int:id>', methods=['GET', 'DELETE'])
+def episode_by_id(id):
+    episode = Episode.query.filter_by(id=id).first()
+    if episode is None:
+        body = {"error": "404: Episode not found"}
+        res = make_response(body, 404)
+        return res
+    if request.method == 'GET':
+        return episode.to_dict(rules=('-guests',))
+    if request.method == 'DELETE':
+        db.session.delete(episode)
+        db.session.commit()
+        res = make_response("", 204)
+        return res
+    
+@app.route('/guests')
+def guests():
+    guests_dict_list = [g.to_dict(rules=('-appearances', '-guests')) for g in Guest.query.all()]
+    return guests_dict_list
+        
+
+
 
 if __name__ == '__main__':
     app.run(port=5555, debug=True)

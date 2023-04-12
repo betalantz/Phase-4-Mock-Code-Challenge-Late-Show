@@ -23,7 +23,7 @@ class Episode(db.Model, SerializerMixin):
     created_at = db.Column(db.DateTime, server_default=db.func.now())
     updated_at = db.Column(db.DateTime, onupdate=db.func.now())
 
-    appearances = db.relationship('Appearance', backref='episode')
+    appearances = db.relationship('Appearance', cascade='all, delete-orphan', backref='episode')
     guests = association_proxy('appearances', 'guest')
 
     def __repr__(self):
@@ -31,6 +31,7 @@ class Episode(db.Model, SerializerMixin):
 
 class Guest(db.Model, SerializerMixin):
     __tablename__ = 'guests'
+    serialize_rules = ('-created_at', '-updated_at',)
 
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String)
