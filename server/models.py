@@ -41,5 +41,13 @@ class Appearance(db.Model, SerializerMixin):
     __tablename__ = 'appearances'
 
     id = db.Column(db.Integer, primary_key=True)
+    rating = db.Column(db.Integer)
+    created_at = db.Column(db.DateTime, server_default=db.func.now())
+    updated_at = db.Column(db.DateTime, onupdate=db.func.now())
 
-# add any models you may need. 
+    episode_id = db.Column(db.Integer,db.ForeignKey('episodes.id'))
+    guest_id = db.Column(db.Integer,db.ForeignKey('guests.id'))
+
+    def __repr__(self):
+        return f'<Appearance (id={self.id}, guest_id={self.guest_id}, episode_id={self.episode_id})>'
+
