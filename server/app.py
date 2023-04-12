@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-from flask import Flask, request
+from flask import Flask, request, make_response
 from flask_migrate import Migrate
 
 from models import db, Episode, Guest, Appearance
@@ -16,7 +16,12 @@ db.init_app(app)
 
 @app.route('/')
 def home():
-    return ''
+    return '<h1>Late Show Code Challenge</h1>'
+
+@app.route('/episodes')
+def episodes():
+    episodes_dict_list = [epi.to_dict(rules=('-appearances', '-guests',)) for epi in Episode.query.all()]
+    return episodes_dict_list
 
 if __name__ == '__main__':
     app.run(port=5555, debug=True)
