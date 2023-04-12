@@ -22,6 +22,9 @@ class Episode(db.Model, SerializerMixin):
     created_at = db.Column(db.DateTime, server_default=db.func.now())
     updated_at = db.Column(db.DateTime, onupdate=db.func.now())
 
+    appearances = db.relationship('Appearance', backref='episode')
+    guests = association_proxy('appearances', 'guest')
+
     def __repr__(self):
         return f'<Episode (id={self.id}, date={self.date}, number={self.number})>'
 
@@ -33,6 +36,9 @@ class Guest(db.Model, SerializerMixin):
     occupation = db.Column(db.String)
     created_at = db.Column(db.DateTime, server_default=db.func.now())
     updated_at = db.Column(db.DateTime, onupdate=db.func.now())
+
+    appearances = db.relationship('Appearance', backref='guest')
+    episodes = association_proxy('appearances', 'episode')
 
     def __repr__(self):
         return f'<Guest (id={self.id}, name={self.name}, occupation={self.occupation})>'
