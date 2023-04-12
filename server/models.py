@@ -29,6 +29,13 @@ class Guest(db.Model, SerializerMixin):
     __tablename__ = 'guests'
 
     id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String)
+    occupation = db.Column(db.String)
+    created_at = db.Column(db.DateTime, server_default=db.func.now())
+    updated_at = db.Column(db.DateTime, onupdate=db.func.now())
+
+    def __repr__(self):
+        return f'<Guest (id={self.id}, name={self.name}, occupation={self.occupation})>'
 
 class Appearance(db.Model, SerializerMixin):
     __tablename__ = 'appearances'
