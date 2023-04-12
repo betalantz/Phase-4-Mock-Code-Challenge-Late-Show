@@ -43,7 +43,23 @@ def guests():
     guests_dict_list = [g.to_dict(rules=('-appearances', '-guests')) for g in Guest.query.all()]
     return guests_dict_list
         
-
+@app.route('/appearances', methods=['POST'])
+def appearances():
+    try:
+        app_json = request.get_json()
+        new_app = Appearance(
+            rating=app_json['rating'],
+            episode_id=app_json['episode_id'],
+            guest_id=app_json['guest_id']
+        )
+    except ValueError:
+        return make_response({"error", "400: Validation error"}, 400)
+    
+    db.session.add(new_app)
+    db.session.commit()
+    app_dict = new_app.to_dict(rules=('-episode_id', '-guest_id'))
+    res = make_response(app_dict, 201)
+    return res
 
 
 if __name__ == '__main__':
