@@ -23,6 +23,16 @@ def episodes():
     episodes_dict_list = [epi.to_dict(rules=('-appearances', '-guests',)) for epi in Episode.query.all()]
     return episodes_dict_list
 
+@app.route('/episodes/<int:id>', methods=['GET', 'DELETE'])
+def episode_by_id(id):
+    episode = Episode.query.filter_by(id=id).first()
+    if episode is None:
+        body = {"error": "404: Episode not found"}
+        res = make_response(body, 404)
+        return res
+    if request.method == 'GET':
+        return episode.to_dict(rules=('-appearances', 'guests', '-guests.appearances'))
+
 if __name__ == '__main__':
     app.run(port=5555, debug=True)
 
