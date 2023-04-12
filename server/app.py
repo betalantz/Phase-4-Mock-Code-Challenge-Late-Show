@@ -32,6 +32,11 @@ def episode_by_id(id):
         return res
     if request.method == 'GET':
         return episode.to_dict(rules=('-appearances', 'guests', '-guests.appearances'))
+    if request.method == 'DELETE':
+        db.session.delete(episode)
+        db.session.commit()
+        res = make_response("", 204)
+        return res
 
 if __name__ == '__main__':
     app.run(port=5555, debug=True)
