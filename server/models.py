@@ -15,6 +15,7 @@ db = SQLAlchemy(metadata=metadata)
 
 class Episode(db.Model, SerializerMixin):
     __tablename__ = 'episodes'
+    serialize_rules = ('-created_at', '-updated_at',)
 
     id = db.Column(db.Integer, primary_key=True)
     date = db.Column(db.String)
