@@ -17,6 +17,13 @@ class Episode(db.Model, SerializerMixin):
     __tablename__ = 'episodes'
 
     id = db.Column(db.Integer, primary_key=True)
+    date = db.Column(db.String)
+    number = db.Column(db.Integer)
+    created_at = db.Column(db.DateTime, server_default=db.func.now())
+    updated_at = db.Column(db.DateTime, onupdate=db.func.now())
+
+    def __repr__(self):
+        return f'<Episode (id={self.id}, date={self.date}, number={self.number})>'
 
 class Guest(db.Model, SerializerMixin):
     __tablename__ = 'guests'
