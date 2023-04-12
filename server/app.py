@@ -37,6 +37,11 @@ def episode_by_id(id):
         db.session.commit()
         res = make_response("", 204)
         return res
+    
+@app.route('/guests')
+def guests():
+    guests_dict_list = [guest.to_dict() for guest in Guest.query.all()]
+    return guests_dict_list
 
 if __name__ == '__main__':
     app.run(port=5555, debug=True)

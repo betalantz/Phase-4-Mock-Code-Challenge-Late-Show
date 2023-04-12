@@ -31,7 +31,7 @@ class Episode(db.Model, SerializerMixin):
 
 class Guest(db.Model, SerializerMixin):
     __tablename__ = 'guests'
-    serialize_rules = ('-created_at', '-updated_at',)
+    serialize_rules = ('-created_at', '-updated_at', '-appearances')
 
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String)
